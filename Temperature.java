@@ -38,6 +38,10 @@ public class Temperature {
   public Temperature (double value, Temperature.Units units) {
       this.units    = units;
       valueInKelvin = convertToKelvin(value);
+      
+      if (valueInKelvin < 0) {
+    	  throw new IllegalArgumentException("Invalid argument - kelvin can't be below zero"); 
+      }
   }
 
   /**
@@ -131,8 +135,25 @@ public class Temperature {
    * in a consistent manner.
    * @param units the new {@code Units} 
    */
-  public void changeUnits(Units units) {
+  public double changeUnits(Units units, double n) {
+      double result;
+
+      // celcius -> fahrenheit
+      if ((this.units == Temperature.Units.CELSIUS) && (units == Temperature.Units.FAHRENHEIT)) {
+    	  result = (9.0/5.0) * n + 32.0;
+      }
+      // fahrenheit -> celcius
+      else if ((this.units == Temperature.Units.FAHRENHEIT) && (units == Temperature.Units.CELSIUS)) {
+    	  result = (n - 32.0) * (5.0 / 9.0);
+      }
+      // use convertFromKelvin for other cases
+      else {
+    	  this.units = units; 
+    	  result = convertFromKelvin(valueInKelvin); 
+      }
+      
       this.units = units;
+      return n;
   }
 
   /** 
@@ -140,11 +161,11 @@ public class Temperature {
    * as follows
    * <pre><code>
    *    Temperature temperature = new Temperature(0, Temperature.Units.CELSIUS);
-   *    System.out.println(temperature.toString()); // prints "0 °C"
+   *    System.out.println(temperature.toString()); // prints "0 °C"
    *    temperature.changeUnits(Temperature.Units.FAHRENHEIT);
-   *    System.out.println(temperature.toString()); // prints "32 °F"
+   *    System.out.println(temperature.toString()); // prints "32 °F"
    *    temperature.changeUnits(Temperature.Units.KELVIN);
-   *    System.out.println(temperature.toString()); // prints "273.15 K"
+   *    System.out.println(temperature.toString()); // prints "273.15 K"
    * </code></pre>
    */
   public String toString() {
