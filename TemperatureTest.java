@@ -15,6 +15,7 @@ public class TemperatureTest {
 
 	@Test
 	//getValue() tests
+	//possible values are negative and positive
 	public void getValueTest() {
 		//0.0 Kelvin, negative Kelvin throws an Exception
 		Temperature boundaryTest = new Temperature(0.0,Temperature.Units.KELVIN);
@@ -39,6 +40,7 @@ public class TemperatureTest {
 
 	@Test
 	//getUnits() tests
+	// 3 possible values - celsius, fahrenheit, kelvin
 	public void getUnitsTest() {
 		//Celsius input
 		Temperature celsiusTest = new Temperature(10.0, Temperature.Units.CELSIUS);
